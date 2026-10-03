@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="uk" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>З Днем Народження, Поплапупсик Поплапупсикович! 💖🐱✨</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        pinkbg: '#120718',
+                        pinkcard: '#240d2d',
+                        pinkborder: '#5c1b6b',
+                        hotpink: '#ff2a8d',
+                        softpink: '#f472b6',
+                        lightpink: '#fbcfe8',
+                        moonYellow: '#fff4d1',
+                        accentViolet: '#a855f7'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- FontAwesome Icons & Canvas Confetti -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        body {
+            background-color: #120718;
+            color: #fce7f3;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Full Moon Visual */
+        .moon-glow {
+            width: 240px;
+            height: 240px;
+            background: radial-gradient(circle at 35% 35%, #ffffff 0%, #fef3c7 40%, #f472b6 85%, #be185d 100%);
+            border-radius: 50%;
+            box-shadow: 
+                0 0 50px rgba(255, 244, 209, 0.7),
+                0 0 120px rgba(255, 42, 141, 0.4),
+                inset -25px -25px 45px rgba(159, 18, 57, 0.3);
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.95;
+        }
+
+        .crater {
+            position: absolute;
+            background: rgba(190, 24, 93, 0.15);
+            border-radius: 50%;
+            box-shadow: inset 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* Glassmorphism Cards */
+        .pink-glass {
+            background: rgba(36, 13, 45, 0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 42, 141, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .pink-glow-box {
+            box-shadow: 0 0 35px rgba(255, 42, 141, 0.25);
+        }
+
+        /* 3D Tarot Card Flip Styling */
+        .tarot-card-container {
+            perspective: 1000px;
+        }
+
+        .tarot-card-inner {
+            position: relative;
+            width: 100%;
+            height: 280px;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .tarot-card-inner.is-flipped {
+            transform: rotateY(180deg);
+        }
+
+        .tarot-card-front, .tarot-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 1.25rem;
+            border: 2px solid rgba(255, 42, 141, 0.4);
+        }
+
+        .tarot-card-back {
+            background: linear-gradient(135deg, #2b0b35 0%, #170421 100%);
+            box-shadow: inset 0 0 20px rgba(255, 42, 141, 0.3);
+        }
+
+        .tarot-card-front {
+            background: linear-gradient(135deg, #3d1248 0%, #20062b 100%);
+            transform: rotateY(180deg);
+            box-shadow: 0 0 25px rgba(255, 42, 141, 0.3);
+        }
+
+        /* Animations */
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(3deg); }
+        }
+
+        .float-anim {
+            animation: floatSlow 5s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+
+        .pulse-glow {
+            animation: pulseGlow 3s ease-in-out infinite;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #120718; }
+        ::-webkit-scrollbar-thumb { background: #5c1b6b; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #ff2a8d; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-hotpink selection:text-white relative">
+
+    <!-- Full Moon Header Visual -->
+    <div class="moon-glow float-anim">
+        <div class="crater w-10 h-10 top-8 left-12"></div>
+        <div class="crater w-14 h-14 top-24 left-28"></div>
+        <div class="crater w-8 h-8 top-32 left-10"></div>
+        <div class="crater w-12 h-12 top-10 left-36"></div>
+    </div>
+
+    <!-- Background Mystical Silhouettes & Floating Particles -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div class="absolute top-24 left-6 text-hotpink/20 text-6xl float-anim" style="animation-delay: 0s;">🎴</div>
+        <div class="absolute top-64 right-8 text-pink-400/20 text-7xl float-anim" style="animation-delay: 1.5s;">🔮</div>
+        <div class="absolute bottom-48 left-10 text-hotpink/20 text-6xl float-anim" style="animation-delay: 2.5s;">🌙</div>
+        <div class="absolute bottom-24 right-12 text-pink-300/20 text-5xl float-anim" style="animation-delay: 1s;">🐾</div>
+        
+        <div class="absolute top-1/4 left-1/3 text-yellow-200/50 text-xl pulse-glow">✨</div>
+        <div class="absolute top-1/3 right-1/4 text-pink-300/60 text-2xl pulse-glow" style="animation-delay: 1s;">⭐</div>
+        <div class="absolute bottom-1/3 left-1/4 text-yellow-100/50 text-lg pulse-glow" style="animation-delay: 2s;">✨</div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="relative z-20 w-full pink-glass border-b border-pink-500/20 px-4 py-3">
+        <div class="max-w-5xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <span class="text-2xl animate-bounce">🐱</span>
+                <span class="text-hotpink font-black tracking-widest text-xs sm:text-sm uppercase">BRODAY // PINK TAROT</span>
+            </div>
+
+            <!-- Controls -->
+            <div class="flex items-center gap-2">
+                <!-- Music Toggle Button -->
+                <button id="musicBtn" onclick="toggleAmbientMusic()" class="px-3 py-1.5 bg-pink-950/80 hover:bg-hotpink border border-pink-500/40 text-pink-200 text-xs font-bold rounded-full transition flex items-center gap-1.5 shadow">
+                    <i id="musicIcon" class="fas fa-music"></i>
+                    <span id="musicText">Музика: ВИМК</span>
+                </button>
+
+                <!-- Confetti Button -->
+                <button onclick="playChimeSound(); firePinkConfetti();" class="px-3.5 py-1.5 bg-gradient-to-r from-hotpink to-softpink hover:brightness-110 text-white font-extrabold text-xs rounded-full transition shadow-lg flex items-center gap-1.5">
+                    <span>✨ Салют</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <header class="relative z-10 pt-28 pb-10 px-4 max-w-3xl mx-auto text-center">
+        <!-- Cute Cat Badge -->
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-pink-950/80 border border-hotpink/40 text-pink-300 rounded-full text-xs font-semibold mb-6 shadow-inner">
+            <span>🐾 Особливий день для найкращого брата</span>
+            <span class="text-yellow-300">✨</span>
+        </div>
+
+        <!-- Main Title -->
+        <h1 class="text-4xl sm:text-6xl font-black text-white tracking-tight leading-tight mb-4">
+            З Днем Народження, <br>
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-hotpink via-softpink to-yellow-200 drop-shadow">
+                Поплапупсик Поплапупсикович! 🎉🐱✨
+            </span>
+        </h1>
+
+        <!-- Wish Text -->
+        <p class="text-pink-100/90 text-base sm:text-lg max-w-xl mx-auto leading-relaxed mb-8">
+            Бажаю міцного здоров'я, космічного фарту, купу кешу та щоб у житті все складалося легко, круто і без піздиця! Ти найкращий бро! 🐾💖
+        </p>
+
+        <!-- Wish Generator Box -->
+        <div class="pink-glass rounded-2xl p-5 border border-hotpink/30 mb-8 max-w-lg mx-auto relative overflow-hidden">
+            <div class="text-xs font-mono text-softpink uppercase tracking-widest mb-2 flex items-center justify-center gap-1">
+                <span>🐱 Генератор братського побажання</span>
+            </div>
+            <p id="wishOutput" class="text-white font-bold text-base my-2 min-h-[48px] flex items-center justify-center transition-opacity duration-300">
+                «Натисни кнопку нижче і отримай містично-котяче побажання!»
+            </p>
+
+            <button onclick="generateRandomWish()" class="mt-2 px-5 py-2.5 bg-pink-600 hover:bg-hotpink text-white font-black text-xs rounded-xl transition shadow-md flex items-center gap-2 mx-auto">
+                <i class="fas fa-dice"></i>
+                <span>Згенерувати побажання ✨</span>
+            </button>
+        </div>
+
+        <!-- Quick Nav -->
+        <div class="flex flex-wrap items-center justify-center gap-3">
+            <a href="#onlineTarotSection" class="px-5 py-2.5 bg-gradient-to-r from-hotpink to-pink-600 hover:brightness-110 text-white font-black text-xs uppercase tracking-wider rounded-xl transition shadow-lg flex items-center gap-2">
+                <span>🔮 Онлайн Таро для Брата</span>
+            </a>
+            <a href="#personalTarotSection" class="px-5 py-2.5 pink-glass hover:bg-pink-900/40 text-pink-200 font-bold text-xs rounded-xl border border-hotpink/30 transition flex items-center gap-2">
+                <span>📩 Замовити Гадання (-50%)</span>
+            </a>
+            <a href="#donateSection" class="px-5 py-2.5 pink-glass hover:bg-pink-900/40 text-pink-200 font-bold text-xs rounded-xl border border-hotpink/30 transition flex items-center gap-2">
+                <span>☕ Донат на каву</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- SECTION 1: ONLINE TAROT CARDS (INTERACTIVE 3D FLIP) -->
+    <section id="onlineTarotSection" class="relative z-10 py-10 px-4 max-w-4xl mx-auto w-full scroll-mt-12">
+        <div class="pink-glass p-6 sm:p-8 rounded-3xl border-2 border-hotpink/40 pink-glow-box">
+            
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center gap-1.5 px-3 py-1 bg-pink-900/60 text-softpink border border-pink-500/30 text-xs font-mono rounded-full uppercase tracking-wider mb-2">
+                    <span>✨ Святковий Розклад Онлайн ✨</span>
+                </div>
+                <h2 class="text-2xl sm:text-4xl font-black text-white">🔮 Онлайн Таро для Братана</h2>
+                <p class="text-pink-200/80 text-xs sm:text-sm mt-1">
+                    Натисни на карти, щоб перевернути їх та дізнатися свій долевий розклад на цей рік!
+                </p>
+            </div>
+
+            <!-- Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                
+                <!-- CARD 1 -->
+                <div class="tarot-card-container" onclick="flipTarotCard(1)">
+                    <div id="tarotCardInner1" class="tarot-card-inner">
+                        <!-- Card Back -->
+                        <div class="tarot-card-back flex flex-col justify-between items-center text-center">
+                            <span class="text-xs font-mono text-softpink tracking-widest uppercase">КАРТА 1</span>
+                            <div class="my-auto">
+                                <div class="text-5xl mb-2">🐾</div>
+                                <span class="text-xs font-bold text-pink-300">Твій Вайб</span>
+                            </div>
+                            <span class="text-[10px] text-pink-400/60">Натисни щоб відкрити ✨</span>
+                        </div>
+                        <!-- Card Front -->
+                        <div class="tarot-card-front flex flex-col justify-between items-center text-center">
+                            <span class="text-[10px] font-mono text-yellow-300 uppercase tracking-widest">✨ ТВІЙ ВАЙБ</span>
+                            <div class="my-auto">
+                                <div id="cardIcon1" class="text-4xl mb-1">🧙‍♂️</div>
+                                <h3 id="cardTitle1" class="text-sm font-black text-white mb-1">Маг Флексу</h3>
+                                <p id="cardDesc1" class="text-[11px] text-pink-100/90 leading-tight">Харизма розриває стандарти. Будь-яка справа в руках горить!</p>
+                            </div>
+                            <span class="text-[10px] text-hotpink font-bold">100% Успіху</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 2 -->
+                <div class="tarot-card-container" onclick="flipTarotCard(2)">
+                    <div id="tarotCardInner2" class="tarot-card-inner">
+                        <!-- Card Back -->
+                        <div class="tarot-card-back flex flex-col justify-between items-center text-center">
+                            <span class="text-xs font-mono text-softpink tracking-widest uppercase">КАРТА 2</span>
+                            <div class="my-auto">
+                                <div class="text-5xl mb-2">💰</div>
+                                <span class="text-xs font-bold text-pink-300">Твоє Бабло</span>
+                            </div>
+                            <span class="text-[10px] text-pink-400/60">Натисни щоб відкрити ✨</span>
+                        </div>
+                        <!-- Card Front -->
+                        <div class="tarot-card-front flex flex-col justify-between items-center text-center">
+                            <span class="text-[10px] font-mono text-yellow-300 uppercase tracking-widest">💵 ТВОЄ БАБЛО</span>
+                            <div class="my-auto">
+                                <div id="cardIcon2" class="text-4xl mb-1">👑</div>
+                                <h3 id="cardTitle2" class="text-sm font-black text-white mb-1">Імператор КЕШУ</h3>
+                                <p id="cardDesc2" class="text-[11px] text-pink-100/90 leading-tight">Фінансовий потік розширюється! Рахунки зеленіють від прибутку.</p>
+                            </div>
+                            <span class="text-[10px] text-hotpink font-bold">Прибуток 🔥</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD 3 -->
+                <div class="tarot-card-container" onclick="flipTarotCard(3)">
+                    <div id="tarotCardInner3" class="tarot-card-inner">
+                        <!-- Card Back -->
+                        <div class="tarot-card-back flex flex-col justify-between items-center text-center">
+                            <span class="text-xs font-mono text-softpink tracking-widest uppercase">КАРТА 3</span>
+                            <div class="my-auto">
+                                <div class="text-5xl mb-2">🚀</div>
+                                <span class="text-xs font-bold text-pink-300">Твій Майбутній Успіх</span>
+                            </div>
+                            <span class="text-[10px] text-pink-400/60">Натисни щоб відкрити ✨</span>
+                        </div>
+                        <!-- Card Front -->
+                        <div class="tarot-card-front flex flex-col justify-between items-center text-center">
+                            <span class="text-[10px] font-mono text-yellow-300 uppercase tracking-widest">🚀 МАЙБУТНІЙ УСПІХ</span>
+                            <div class="my-auto">
+                                <div id="cardIcon3" class="text-4xl mb-1">🌟</div>
+                                <h3 id="cardTitle3" class="text-sm font-black text-white mb-1">Зірка Братана</h3>
+                                <p id="cardDesc3" class="text-[11px] text-pink-100/90 leading-tight">Усі твої мрії перетворяться на дійсність. Жодних перешкод!</p>
+                            </div>
+                            <span class="text-[10px] text-hotpink font-bold">Космічний зліт</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Reshuffle Button -->
+            <div class="text-center">
+                <button onclick="reshuffleTarotCards()" class="px-6 py-2.5 bg-pink-900/60 hover:bg-hotpink text-white font-bold text-xs rounded-xl border border-pink-500/40 transition flex items-center gap-2 mx-auto">
+                    <i class="fas fa-sync-alt"></i>
+                    <span>Перемішати карти та витягнути знову</span>
+                </button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECTION 2: PERSONAL TAROT REQUEST (-50% DISCOUNT) -->
+    <section id="personalTarotSection" class="relative z-10 py-10 px-4 max-w-2xl mx-auto w-full scroll-mt-12">
+        <div class="pink-glass p-6 sm:p-8 rounded-3xl border-2 border-hotpink/50 pink-glow-box relative">
+            
+            <!-- Floating Cat Mascot -->
+            <div class="absolute -top-6 -right-4 text-4xl float-anim">🐱🔮</div>
+
+            <!-- Price Tag Discount Header -->
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+                <span class="px-3 py-1 bg-hotpink text-white font-black text-[11px] uppercase tracking-widest rounded-md shadow">
+                    🔥 ЗНИЖКА -50% ДЛЯ БРАТА
+                </span>
+                <div class="flex items-center gap-2">
+                    <span class="line-through text-pink-400/60 font-bold text-sm">800 грн</span>
+                    <span class="text-2xl font-black text-yellow-300 drop-shadow">400 грн!</span>
+                </div>
+            </div>
+
+            <!-- Title -->
+            <h2 class="text-2xl sm:text-3xl font-black text-white mb-2 flex items-center gap-2">
+                <span>🔮 Персональний Розклад Таро</span>
+            </h2>
+
+            <p class="text-pink-200/80 text-xs sm:text-sm leading-relaxed mb-6">
+                Жодного робота! Напиши своє запитання нижче (про роботу, кохання, майбутнє чи будь-яку тему), натисни кнопку — і запитання відправиться мені. Я особисто розкладу тобі карти Таро і пришлю детальний розклад! ✨
+            </p>
+
+            <!-- Question Form -->
+            <form onsubmit="sendTarotToTelegram(event)" class="space-y-4">
+                <div>
+                    <label for="tarotQuestion" class="block text-xs font-mono text-softpink mb-2 uppercase tracking-wider">
+                        🐾 Напиши своє запитання карткам:
+                    </label>
+                    <textarea 
+                        id="tarotQuestion" 
+                        rows="3" 
+                        required 
+                        placeholder="Наприклад: Що чекає мене цього року в бізнесі? Які можливості відкриються?" 
+                        class="w-full p-4 bg-pink-950/80 border border-pink-500/40 rounded-2xl text-white placeholder-pink-400/40 text-sm focus:outline-none focus:border-hotpink transition resize-none shadow-inner"
+                    ></textarea>
+                </div>
+
+                <div>
+                    <label for="userContact" class="block text-xs font-mono text-softpink mb-1 uppercase tracking-wider">
+                        Твій Telegram тэг або телефон (щоб я знав куди прислати розклад):
+                    </label>
+                    <input 
+                        type="text" 
+                        id="userContact" 
+                        placeholder="@username або номер" 
+                        class="w-full p-3 bg-pink-950/80 border border-pink-500/40 rounded-xl text-white placeholder-pink-400/40 text-xs focus:outline-none focus:border-hotpink transition"
+                    >
+                </div>
+
+                <!-- Submit Button -->
+                <button 
+                    type="submit" 
+                    class="w-full py-4 bg-gradient-to-r from-hotpink via-pink-600 to-purple-600 hover:brightness-110 text-white font-black text-xs sm:text-sm uppercase tracking-wider rounded-2xl transition shadow-lg flex items-center justify-center gap-2 mt-4"
+                >
+                    <i class="fab fa-telegram-plane text-lg"></i>
+                    <span>Надіслати питання в Telegram (400 грн)</span>
+                </button>
+            </form>
+
+            <!-- Telegram Bot Config Options Toggle -->
+            <div class="mt-4 pt-4 border-t border-pink-900/40 flex justify-between items-center text-[11px] text-pink-300/60">
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: DONATION SECTION FOR COFFEE & CAT TREATS -->
+    <section id="donateSection" class="relative z-10 py-10 px-4 max-w-2xl mx-auto w-full scroll-mt-12">
+        <div class="pink-glass p-6 sm:p-8 rounded-3xl border border-pink-500/40 text-center relative overflow-hidden">
+            
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 bg-pink-900/60 text-softpink border border-pink-500/30 text-xs font-mono rounded-full uppercase tracking-wider mb-3">
+                <span>☕ Донат для автора та котиків 🐟</span>
+            </div>
+
+            <h2 class="text-2xl sm:text-4xl font-black text-white uppercase tracking-tight mb-2">
+                Донат на Кавуську та Кормик
+            </h2>
+
+            <p class="text-pink-200/80 text-xs sm:text-sm max-w-md mx-auto mb-6 leading-relaxed">
+                Якщо тобі сподобався сайт і ти хочеш підтримати мою команду  та підняти настрій котикам — закинути монеточку можна прямо сюди! 🐾
+            </p>
+
+            <!-- Monobank Card Box -->
+            <div class="bg-pink-950/90 p-4 sm:p-5 rounded-2xl border border-hotpink/40 max-w-md mx-auto mb-6 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-inner">
+                <div class="text-left">
+                    <span class="text-[10px] font-mono text-softpink uppercase tracking-widest block">Карта Monobank</span>
+                    <span id="cardNumber" class="font-mono text-base sm:text-lg font-bold text-yellow-300 tracking-wider">4874 0700 2059 1242</span>
+                </div>
+                <button onclick="copyCardNumber()" class="w-full sm:w-auto px-4 py-2.5 bg-hotpink hover:bg-pink-500 text-white font-black text-xs rounded-xl transition flex items-center justify-center gap-1.5 shadow">
+                    <i class="far fa-copy"></i>
+                    <span id="copyBtnText">Скопіювати</span>
+                </button>
+            </div>
+
+            <!-- Presets -->
+            <div class="flex flex-wrap items-center justify-center gap-2 mb-6">
+                <button onclick="selectPreset('50 ₴', 'Еспресо')" class="px-3.5 py-2 bg-pink-900/50 hover:bg-hotpink hover:text-white border border-pink-500/30 text-pink-200 text-xs font-bold rounded-xl transition">
+                    ☕ 50 ₴ (Еспресо)
+                </button>
+                <button onclick="selectPreset('100 ₴', 'Лате')" class="px-3.5 py-2 bg-pink-900/50 hover:bg-hotpink hover:text-white border border-pink-500/30 text-pink-200 text-xs font-bold rounded-xl transition">
+                    🥤 100 ₴ (Лате)
+                </button>
+                <button onclick="selectPreset('200 ₴', 'Смаколики котику')" class="px-3.5 py-2 bg-pink-900/50 hover:bg-hotpink hover:text-white border border-pink-500/30 text-pink-200 text-xs font-bold rounded-xl transition">
+                    🐟 200 ₴ (Кормик коту)
+                </button>
+                <button onclick="selectPreset('400 ₴', 'Гадання Таро')" class="px-3.5 py-2 bg-pink-900/50 hover:bg-hotpink hover:text-white border border-pink-500/30 text-pink-200 text-xs font-bold rounded-xl transition">
+                    🔮 400 ₴ (За Таро)
+                </button>
+            </div>
+
+            <!-- Caffeine & Happiness Meter -->
+            <div class="max-w-md mx-auto bg-pink-950/60 p-4 rounded-2xl border border-pink-500/20">
+                <div class="flex justify-between items-center text-xs text-softpink font-mono mb-1">
+                    <span>Рівень кавуськи та щастя котиків:</span>
+                    <span id="meterPercent" class="font-bold text-yellow-300">85%</span>
+                </div>
+                <div class="w-full bg-pink-950 h-3 rounded-full overflow-hidden border border-pink-500/30">
+                    <div id="meterBar" class="bg-gradient-to-r from-hotpink via-softpink to-yellow-300 h-full w-[85%] transition-all duration-500 rounded-full"></div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="relative z-10 py-8 text-center text-pink-300/50 text-xs border-t border-pink-900/40 mt-8">
+        <p>З Днем Народження, Братан! • Зроблено з любов'ю, котиками та магією 💖✨</p>
+    </footer>
+
+    <!-- TELEGRAM BOT CONFIG MODAL -->
+    <div id="botModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="pink-glass p-6 rounded-3xl border border-hotpink max-w-md w-full relative">
+            <button onclick="toggleBotModal()" class="absolute top-4 right-4 text-pink-300 hover:text-white">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+            <h3 class="text-xl font-bold text-white mb-2">⚙️ Telegram Bot Налаштування</h3>
+            <p class="text-xs text-pink-200/80 mb-4">
+                Вкажи свій Telegram Bot Token та Chat ID, щоб питання брата приходили прямо в чат твоєму боту без відкриття посилання.
+            </p>
+            <div class="space-y-3 mb-4">
+                <div>
+                    <label class="block text-[10px] font-mono text-softpink uppercase">Bot Token:</label>
+                    <input type="text" id="tgBotToken" placeholder="123456789:ABCdef..." class="w-full p-2.5 bg-pink-950 border border-pink-500/30 rounded-xl text-white text-xs">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-mono text-softpink uppercase">Chat ID:</label>
+                    <input type="text" id="tgChatId" placeholder="12345678" class="w-full p-2.5 bg-pink-950 border border-pink-500/30 rounded-xl text-white text-xs">
+                </div>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="saveBotSettings()" class="flex-1 py-2.5 bg-hotpink text-white font-bold text-xs rounded-xl">Зберегти</button>
+                <button onclick="clearBotSettings()" class="py-2.5 px-4 bg-pink-950 text-pink-300 font-bold text-xs rounded-xl border border-pink-500/30">Скинути</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <script>
+        /* --- PROCEDURAL AUDIO & SOUND FX ENGINE --- */
+        let audioCtx = null;
+        let isMusicPlaying = false;
+        let synthInterval = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        // Play ambient magical pentatonic synth loop
+        function toggleAmbientMusic() {
+            initAudio();
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            const btnText = document.getElementById('musicText');
+            const btnIcon = document.getElementById('musicIcon');
+
+            if (isMusicPlaying) {
+                // Stop music
+                isMusicPlaying = false;
+                clearInterval(synthInterval);
+                btnText.textContent = "Музика: ВИМК";
+                btnIcon.className = "fas fa-music";
+                showToast("🎵 Фонову музику вимкнено");
+            } else {
+                // Start music
+                isMusicPlaying = true;
+                btnText.textContent = "Музика: УВІМК 🎶";
+                btnIcon.className = "fas fa-pause";
+                showToast("🎶 Фонова чарівна музика грає!");
+
+                // Musical notes in Eb Major Pentatonic scale
+                const scale = [311.13, 349.23, 392.00, 466.16, 523.25, 622.25]; // Eb4, F4, G4, Bb4, C5, Eb5
+
+                synthInterval = setInterval(() => {
+                    if (!isMusicPlaying) return;
+
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    const filter = audioCtx.createBiquadFilter();
+
+                    const freq = scale[Math.floor(Math.random() * scale.length)];
+                    osc.type = 'sine';
+                    osc.frequency.value = freq;
+
+                    filter.type = 'lowpass';
+                    filter.frequency.value = 1200;
+
+                    const now = audioCtx.currentTime;
+                    gain.gain.setValueAtTime(0.001, now);
+                    gain.gain.linearRampToValueAtTime(0.04, now + 0.4);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, now + 2.5);
+
+                    osc.connect(filter);
+                    filter.connect(gain);
+                    gain.connect(audioCtx.destination);
+
+                    osc.start(now);
+                    osc.stop(now + 2.6);
+                }, 800);
+            }
+        }
+
+        // Sound FX Chime for card flips and buttons
+        function playChimeSound() {
+            try {
+                initAudio();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
+                osc.frequency.exponentialRampToValueAtTime(1046.50, audioCtx.currentTime + 0.2); // C6
+                
+                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
+                
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.25);
+            } catch(e) {}
+        }
+
+        /* --- PINK CONFETTI LAUNCHER --- */
+        function firePinkConfetti() {
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 90,
+                    spread: 80,
+                    origin: { y: 0.6 },
+                    colors: ['#ff2a8d', '#f472b6', '#fbcfe8', '#fff4d1', '#a855f7']
+                });
+            }
+        }
+
+        /* --- BRO WISH GENERATOR --- */
+        const wishes = [
+            "🐾 Хай у житті все буде муркітливо, а гаманець тріщить від купюр!",
+            "🔮 Карти кажуть: на тебе чекає грандіозний успіх, купу кешу і міцне здоров'я!",
+            "☕ Хай кава завжди буде запашною, а всі проблеми випаровуються за секунду!",
+            "🚀 Бажаю космічної енергії, вірних братів поруч і топового настрою 24/7!",
+            "🐟 Хай фортуна муркоче тобі на вушко і підганяє найкращі можливості!",
+            "💎 Будь завжди на висоті, бережи себе і кайфуй від кожного дня, братуха!"
+        ];
+
+        function generateRandomWish() {
+            playChimeSound();
+            firePinkConfetti();
+            const randomIndex = Math.floor(Math.random() * wishes.length);
+            const wishOutput = document.getElementById('wishOutput');
+            wishOutput.style.opacity = '0';
+            setTimeout(() => {
+                wishOutput.textContent = wishes[randomIndex];
+                wishOutput.style.opacity = '1';
+            }, 150);
+        }
+
+        /* --- ONLINE 3D TAROT CARDS LOGIC --- */
+        const tarotData1 = [
+            { icon: "🧙‍♂️", title: "Маг Флексу", desc: "Харизма розриває всі стандарти. Будь-яка справа горить у руках!" },
+            { icon: "🐱", title: "Туз Муркотіння", desc: "Абсолютний спокій та комфорт. Ти на висоті у всьому!" },
+            { icon: "⚡", title: "Лицар Драйву", desc: "Нестримна енергія штовхає тебе до нових вершин." }
+        ];
+
+        const tarotData2 = [
+            { icon: "👑", title: "Імператор КЕШУ", desc: "Фінансовий потік розширюється! Рахунки зеленіють від прибутку." },
+            { icon: "💎", title: "Алхімік Бабла", desc: "Усі твої ідеї приноситимуть реальні гроші та успіх." },
+            { icon: "🏦", title: "Маг Інвестицій", desc: "Твої статки зростають швидше, ніж ти встигаєш рахувати!" }
+        ];
+
+        const tarotData3 = [
+            { icon: "🌟", title: "Зірка Братана", desc: "Усі твої мрії перетворяться на дійсність. Жодних перешкод!" },
+            { icon: "🚀", title: "Ракета Успіху", desc: "Швидкий зліт у кар'єрі та особистому житті. Тільки вперед!" },
+            { icon: "🏆", title: "Король Перемог", desc: "Ти з з легкістю забереш усі трофеї цього року!" }
+        ];
+
+        function flipTarotCard(cardNumber) {
+            playChimeSound();
+            const cardInner = document.getElementById(`tarotCardInner${cardNumber}`);
+            cardInner.classList.toggle('is-flipped');
+        }
+
+        function reshuffleTarotCards() {
+            playChimeSound();
+            firePinkConfetti();
+
+            // Unflip all cards first
+            for (let i = 1; i <= 3; i++) {
+                document.getElementById(`tarotCardInner${i}`).classList.remove('is-flipped');
+            }
+
+            // Update contents after flip back
+            setTimeout(() => {
+                const rand1 = tarotData1[Math.floor(Math.random() * tarotData1.length)];
+                const rand2 = tarotData2[Math.floor(Math.random() * tarotData2.length)];
+                const rand3 = tarotData3[Math.floor(Math.random() * tarotData3.length)];
+
+                document.getElementById('cardIcon1').textContent = rand1.icon;
+                document.getElementById('cardTitle1').textContent = rand1.title;
+                document.getElementById('cardDesc1').textContent = rand1.desc;
+
+                document.getElementById('cardIcon2').textContent = rand2.icon;
+                document.getElementById('cardTitle2').textContent = rand2.title;
+                document.getElementById('cardDesc2').textContent = rand2.desc;
+
+                document.getElementById('cardIcon3').textContent = rand3.icon;
+                document.getElementById('cardTitle3').textContent = rand3.title;
+                document.getElementById('cardDesc3').textContent = rand3.desc;
+
+                showToast("🔮 Карти перемішані! Натисни, щоб перевернути!");
+            }, 400);
+        }
+
+        /* --- PERSONAL TAROT QUESTION TELEGRAM LOGIC --- */
+        async function sendTarotToTelegram(e) {
+            e.preventDefault();
+            playChimeSound();
+            firePinkConfetti();
+
+            const question = document.getElementById('tarotQuestion').value.trim();
+            const contact = document.getElementById('userContact').value.trim();
+
+            if (!question) {
+                showToast('⚠️ Будь ласка, напиши питання!');
+                return;
+            }
+
+            const token = localStorage.getItem('tgBotToken');
+            const chatId = localStorage.getItem('tgChatId');
+
+            let messageText = `Привіт! 🔮 Моє запитання для персонального Таро (-50% ціна 400 грн):\n\n❓ "${question}"`;
+            if (contact) {
+                messageText += `\n\n📱 Мій контакт: ${contact}`;
+            }
+
+            // If user configured a direct Telegram Bot
+            if (token && chatId) {
+                try {
+                    const resp = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ chat_id: chatId, text: messageText })
+                    });
+                    if (resp.ok) {
+                        showToast('✅ Запитання успішно надіслано через Telegram Bot!');
+                        document.getElementById('tarotQuestion').value = '';
+                        return;
+                    }
+                } catch(err) {
+                    console.log('Bot send failed, falling back to Telegram link');
+                }
+            }
+
+            // Fallback: Opens direct Telegram URL share link
+            const encodedMsg = encodeURIComponent(messageText);
+            const tgUrl = `https://t.me/share/url?url=${encodedMsg}`;
+
+            showToast('🔮 Відкриваю Telegram для відправки...');
+            setTimeout(() => {
+                window.open(tgUrl, '_blank');
+            }, 500);
+        }
+
+        /* --- BOT MODAL CONTROLS --- */
+        function toggleBotModal() {
+            playChimeSound();
+            const modal = document.getElementById('botModal');
+            modal.classList.toggle('hidden');
+            if (!modal.classList.contains('hidden')) {
+                document.getElementById('tgBotToken').value = localStorage.getItem('tgBotToken') || '';
+                document.getElementById('tgChatId').value = localStorage.getItem('tgChatId') || '';
+            }
+        }
+
+        function saveBotSettings() {
+            playChimeSound();
+            const token = document.getElementById('tgBotToken').value.trim();
+            const chatId = document.getElementById('tgChatId').value.trim();
+            localStorage.setItem('tgBotToken', token);
+            localStorage.setItem('tgChatId', chatId);
+            showToast('⚙️ Налаштування Telegram збережено!');
+            toggleBotModal();
+        }
+
+        function clearBotSettings() {
+            playChimeSound();
+            localStorage.removeItem('tgBotToken');
+            localStorage.removeItem('tgChatId');
+            document.getElementById('tgBotToken').value = '';
+            document.getElementById('tgChatId').value = '';
+            showToast('⚙️ Скинуто');
+        }
+
+        /* --- MONOBANK DONATION COPY & METER --- */
+        function copyCardNumber() {
+            playChimeSound();
+            const cardNumber = "4441 1111 2222 3333";
+            
+            const tempInput = document.createElement('textarea');
+            tempInput.value = cardNumber;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            const btnText = document.getElementById('copyBtnText');
+            btnText.textContent = 'Скопійовано! ✨';
+            showToast('💳 Номер картки скопійовано! Дякую!');
+
+            boostMeter(5);
+
+            setTimeout(() => {
+                btnText.textContent = 'Скопіювати';
+            }, 2500);
+        }
+
+        function selectPreset(amount, label) {
+            playChimeSound();
+            copyCardNumber();
+            showToast(`💖 Дякую за підтримку! Обрано: ${amount} (${label})`);
+            boostMeter(10);
+        }
+
+        let currentPercent = 85;
+        function boostMeter(amount) {
+            currentPercent = Math.min(100, currentPercent + amount);
+            document.getElementById('meterPercent').textContent = currentPercent + '%';
+            document.getElementById('meterBar').style.width = currentPercent + '%';
+        }
+
+        /* --- TOAST SYSTEM --- */
+        function showToast(msg) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = "pink-glass border border-hotpink/60 text-white px-4 py-3 rounded-2xl shadow-2xl text-xs font-semibold flex items-center gap-2 transform transition-all duration-300 translate-y-4 opacity-0 pointer-events-auto backdrop-blur-md";
+            toast.innerHTML = msg;
+
+            container.appendChild(toast);
+
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-y-4', 'opacity-0');
+            });
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-4', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3200);
+        }
+
+        /* Soft greeting confetti on load */
+        window.onload = function() {
+            setTimeout(firePinkConfetti, 500);
+        };
+    </script>
+</body>
+</html>
